@@ -26,7 +26,7 @@ const cache = new Map();
 
 app.get("/", (req, res) => {
   res.json({
-    message: "Enterprise Hierarchical Backend API",
+    message: "Nodal Backend API",
     description:
       "This API dynamically generates enterprise-level hierarchical data (App → Pages → Components → Elements). Data is lazy-loaded and generated on demand.",
     howToUse: {

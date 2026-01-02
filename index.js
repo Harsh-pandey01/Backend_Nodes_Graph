@@ -22,7 +22,45 @@ const rootNode = createNode({
 });
 
 // endpoint to get children of any node
-const cache = new Map(); // optional caching
+const cache = new Map();
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "Enterprise Hierarchical Backend API",
+    description:
+      "This API dynamically generates enterprise-level hierarchical data (App → Pages → Components → Elements). Data is lazy-loaded and generated on demand.",
+    howToUse: {
+      step1: "Start from the App level",
+      endpoint: "/nodes/root/children?type=app",
+      description: "Returns all Pages inside the App",
+    },
+    routes: [
+      {
+        level: "App → Pages",
+        method: "GET",
+        endpoint: "/nodes/root/children?type=app",
+      },
+      {
+        level: "Page → Components",
+        method: "GET",
+        endpoint: "/nodes/:pageId/children?type=page",
+        example: "/nodes/page-1/children?type=page",
+      },
+      {
+        level: "Component → Elements",
+        method: "GET",
+        endpoint: "/nodes/:componentId/children?type=component",
+        example: "/nodes/comp-10/children?type=component",
+      },
+    ],
+    notes: [
+      "Children are lazy-loaded (generated only when requested)",
+      "Some components may return an empty array (no elements)",
+      "No database is used — data is generated in-memory",
+      "Designed for enterprise-scale testing",
+    ],
+  });
+});
 
 app.get("/nodes/:id/children", (req, res) => {
   const { type } = req.query; // frontend tells us what type of node it is
